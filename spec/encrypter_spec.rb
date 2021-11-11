@@ -57,21 +57,21 @@ describe Encrypter do
 
   it 'a_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.key_finder).to eq('01')
+    expect(encrypter.a_key).to eq('01')
   end
 
   it 'b_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.key_finder).to eq('12')
+    expect(encrypter.b_key).to eq('12')
   end
 
   it 'c_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.key_finder).to eq('23')
+    expect(encrypter.c_key).to eq('23')
   end
 
   it 'd_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.key_finder).to eq('34')
+    expect(encrypter.d_key).to eq('34')
   end
 end
