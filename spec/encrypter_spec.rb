@@ -16,10 +16,10 @@ describe Encrypter do
     expect(encrypter.character_set).to eq(("a".."z").to_a << " ")
   end
 
-  it 'offsets' do
-    expect(encrypter.offset.length).to be(4)
-    expect(encrypter.offset(date).length).to be(4)
-    expect(encrypter.offset(date)).to eq('0401')
+  it 'finds offsets' do
+    expect(encrypter.offset_finder.length).to be(4)
+    expect(encrypter.offset_finder(date).length).to be(4)
+    expect(encrypter.offset_finder(date)).to eq('0401')
   end
 
   it 'a offsets' do
@@ -40,5 +40,10 @@ describe Encrypter do
   it 'd offsets' do
     expect(encrypter.d_offset).to be_a(Integer)
     expect(encrypter.d_offset(date)).to eq(1)
+  end
+
+  it 'lists the offsets' do
+    expect(encrypter.offset).to be_a(Hash)
+    expect(encrypter.offset(date)).to eq( {'A' => 0, 'B' => 4, 'C' => 0, 'D' => 1})
   end
 end
