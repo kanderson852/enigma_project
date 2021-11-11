@@ -1,16 +1,13 @@
+require_relative './offset'
+
 class Encrypter
+  include Offset
   attr_reader :character_set
   def initialize
     @character_set = ("a".."z").to_a << " "
   end
 
-  def a_shift
-
+  def offset(date = Date.today)
+    offset_finder(date)
   end
-
-  def a_key
-  end
-
-  def a_offset
-  end 
 end
