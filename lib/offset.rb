@@ -1,28 +1,31 @@
 
 module Offset
-  def offset_finder(date = Date.today)
-    date_formatter = date.strftime('%d''%m''%y')
-    date_squared = (date_formatter).to_i ** 2
+  def date_formatter
+    Date.today.strftime('%d''%m''%y')
+  end
+
+  def offset_finder(date = date_formatter)
+    date_squared = (date).to_i ** 2
     date_squared.to_s.slice(-4..-1)
   end
 
-  def a_offset(date = Date.today)
+  def a_offset(date = date_formatter)
     offset_finder(date).slice(0).to_i
   end
 
-  def b_offset(date = Date.today)
+  def b_offset(date = date_formatter)
     offset_finder(date).slice(1).to_i
   end
 
-  def c_offset(date = Date.today)
+  def c_offset(date = date_formatter)
     offset_finder(date).slice(2).to_i
   end
 
-  def d_offset(date = Date.today)
+  def d_offset(date = date_formatter)
     offset_finder(date).slice(3).to_i
   end
 
-  def offset(date = Date.today)
+  def offset(date = date_formatter)
     {
       'A' => a_offset(date),
       'B' => b_offset(date),

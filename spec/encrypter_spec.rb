@@ -6,7 +6,7 @@ require "./lib/enigma"
 describe Encrypter do
 
   let(:encrypter) {Encrypter.new}
-  let(:date) {Date.new(2001,2,3)}
+  let(:date) {'030201'}
 
   it 'exists' do
     expect(encrypter).to be_an_instance_of(Encrypter)
@@ -23,22 +23,22 @@ describe Encrypter do
   end
 
   it 'a offsets' do
-    expect(encrypter.a_offset).to be_a(Integer)
+    expect(encrypter.a_offset(date)).to be_a(Integer)
     expect(encrypter.a_offset(date)).to eq(0)
   end
 
   it 'b offsets' do
-    expect(encrypter.b_offset).to be_a(Integer)
+    expect(encrypter.b_offset(date)).to be_a(Integer)
     expect(encrypter.b_offset(date)).to eq(4)
   end
 
   it 'c offsets' do
-    expect(encrypter.c_offset).to be_a(Integer)
+    expect(encrypter.c_offset(date)).to be_a(Integer)
     expect(encrypter.c_offset(date)).to eq(0)
   end
 
   it 'd offsets' do
-    expect(encrypter.d_offset).to be_a(Integer)
+    expect(encrypter.d_offset(date)).to be_a(Integer)
     expect(encrypter.d_offset(date)).to eq(1)
   end
 
@@ -83,5 +83,9 @@ describe Encrypter do
   it 'generates total shift' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
     expect(encrypter.shifts(date, encrypter.keys)).to eq({'A' => 01, 'B' => 16, 'C' => 23, 'D' => 35})
+  end
+
+  it 'can encrypt' do
+    expect(encrypter.encrypt("hello world", "02715", "040895")).to eq({encryption: "keder ohulw", key: "02715", date: "040895"})
   end
 end
