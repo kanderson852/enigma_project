@@ -9,15 +9,7 @@ class Encrypter
     @character_set = ("a".."z").to_a << " "
   end
 
-  def offset(date = Date.today)
-    {
-      'A' => a_offset(date),
-      'B' => b_offset(date),
-      'C' => c_offset(date),
-      'D' => d_offset(date)
-    }
+  def shifts(date = Date.today, keys)
+    offset(date).merge(keys){|key, offset, keys| offset.to_i + keys.to_i}
   end
-
-  def keys
-  end 
 end

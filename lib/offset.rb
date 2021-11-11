@@ -21,4 +21,13 @@ module Offset
   def d_offset(date = Date.today)
     offset_finder(date).slice(3).to_i
   end
+
+  def offset(date = Date.today)
+    {
+      'A' => a_offset(date),
+      'B' => b_offset(date),
+      'C' => c_offset(date),
+      'D' => d_offset(date)
+    }
+  end
 end
