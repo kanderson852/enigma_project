@@ -15,6 +15,4 @@ describe Enigma do
   it 'can decrypt' do
     expect(enigma.decrypt(message, key, date)).to be_a(Hash)
   end
-
-  
 end
