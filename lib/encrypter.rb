@@ -8,6 +8,11 @@ class Encrypter
   end
 
   def offset(date = Date.today)
-    offset_finder(date)
+    {
+      'A' => a_offset(date),
+      'B' => b_offset(date),
+      'C' => c_offset(date),
+      'D' => d_offset(date)
+    }
   end
 end
