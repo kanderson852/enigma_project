@@ -7,7 +7,6 @@ describe Encrypter do
 
   let(:encrypter) {Encrypter.new}
   let(:date) {Date.new(2001,2,3)}
-  let(:key) {allow(encrypter).to receive(:key_finder).and_return('01234')}
 
   it 'exists' do
     expect(encrypter).to be_an_instance_of(Encrypter)
@@ -57,21 +56,32 @@ describe Encrypter do
 
   it 'a_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.a_key).to eq('01')
+    expect(encrypter.a_key).to eq(01)
   end
 
   it 'b_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.b_key).to eq('12')
+    expect(encrypter.b_key).to eq(12)
   end
 
   it 'c_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.c_key).to eq('23')
+    expect(encrypter.c_key).to eq(23)
   end
 
   it 'd_key' do
     allow(encrypter).to receive(:key_finder).and_return('01234')
-    expect(encrypter.d_key).to eq('34')
+    expect(encrypter.d_key).to eq(34)
+  end
+
+  it 'lists the offsets' do
+    expect(encrypter.keys).to be_a(Hash)
+    allow(encrypter).to receive(:key_finder).and_return('01234')
+    expect(encrypter.keys).to eq( {'A' => 01, 'B' => 12, 'C' => 23, 'D' => 34})
+  end
+
+  it 'generates total shift' do
+    allow(encrypter).to receive(:key_finder).and_return('01234')
+    expect(encrypter.shifts(date, encrypter.keys)).to eq({'A' => 01, 'B' => 16, 'C' => 23, 'D' => 35})
   end
 end
