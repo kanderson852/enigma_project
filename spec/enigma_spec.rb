@@ -8,16 +8,13 @@ describe Enigma do
     expect(enigma).to be_an_instance_of(Enigma)
   end
 
-  xit 'can encrypt' do
-    expect(enigma.encrypt(message, key, date)).to be_a(Hash)
+  it 'can encrypt' do
+    expect(enigma.encrypt("hello world", "02715", "040895")).to eq({encryption: "keder ohulw", key: "02715", date: "040895"})
+    expect(enigma.encrypt("hello world", "02715")).to be_a(Hash)
+    expect(enigma.encrypt("hello world", "02715")).to include(key: "02715")
   end
 
   xit 'can decrypt' do
     expect(enigma.decrypt(message, key, date)).to be_a(Hash)
   end
-
-  it 'uses current date as a default' do
-    allow(Date).to receive(:today).and_return(Date.new(2001,2,3))
-  end
-
 end
