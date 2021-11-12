@@ -15,9 +15,28 @@ class Encrypter
 
   def encrypt(message, key = key_finder, date = date_formatter)
     shift = shifts(date, key)
-    require "pry"; binding.pry
+    message_characters = message.split('')
+    message_index = message_characters.map do |message_character|
+      if @character_set.include?(message_character)
+        @character_set.index(message_character)
+      end
+    end.each_slice(4).to_a
+    new_message_shift = []
+    transformer = message_index.map do |array|
+      Hash[shift.values.zip(array)]
+    end.map do |hash|
+      hash.compact.each_pair do |shift, index|
+        new_message_shift << shift + index
+      end
+    end
+     encrypter = new_message_shift.map do |index|
+      @character_set.rotate(index)
+    end
+    new_message = encrypter.map do |letter|
+      letter[0]
+    end.inject(:+)
     {
-      encryption: message,
+      encryption: new_message,
       key: key,
       date: date
     }
