@@ -9,7 +9,17 @@ class Encrypter
     @character_set = ("a".."z").to_a << " "
   end
 
-  def shifts(date = Date.today, keys)
-    offset(date).merge(keys){|key, offset, keys| offset.to_i + keys.to_i}
+  def shifts(date = date_formatter, key = key_finder)
+    offset(date).merge(key_hash(key)){|letter, offset, keys| offset.to_i + keys.to_i}
+  end
+
+  def encrypt(message, key = key_finder, date = date_formatter)
+    shift = shifts(date, key)
+    require "pry"; binding.pry
+    {
+      encryption: message,
+      key: key,
+      date: date
+    }
   end
 end
