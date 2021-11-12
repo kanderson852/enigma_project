@@ -99,5 +99,10 @@ describe Encrypter do
     expect(encrypter.encrypt("hello world", "02715", "040895")).to eq({encryption: "keder ohulw", key: "02715", date: "040895"})
     expect(encrypter.encrypt("hello world", "02715")).to be_a(Hash)
     expect(encrypter.encrypt("hello world", "02715")).to include(key: "02715")
+    expect(encrypter.encrypt("hello world")).to be_a(Hash)
+  end
+
+  it 'can decrypt' do
+    expect(encrypter.decrypt("keder ohulw", "02715", "040895")).to eq({decryption: "hello world", key: "02715", date: "040895"})
   end
 end
