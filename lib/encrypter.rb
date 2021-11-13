@@ -43,13 +43,16 @@ class Encrypter
     if special_character == {}
       final_message = new_message
     else
-      final_message = new_message.insert(special_character.values[0], special_character.keys[0])
+      final_message = special_character.each_pair do |character, index|
+        new_message.insert(index, character)
+      end
+      new_message
     end
   end
 
   def decrypt(message, key = key_finder, date = date_formatter)
     shift = shifts(date, key)
-    message_characters = message.split('')
+    message_characters = message.downcase.split('')
     special_character = Hash.new(0)
     message_index = []
     message_characters.each do |message_character|
@@ -77,7 +80,10 @@ class Encrypter
     if special_character == {}
       final_message = new_message
     else
-      final_message = new_message.insert(special_character.values[0], special_character.keys[0])
+      final_message = special_character.each_pair do |character, index|
+        new_message.insert(index, character)
+      end
+      new_message
     end
   end
 end
