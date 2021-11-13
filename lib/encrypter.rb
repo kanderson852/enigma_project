@@ -17,14 +17,15 @@ class Encrypter
     shift = shifts(date, key)
     message_characters = message.downcase.split('')
     special_character = Hash.new(0)
-    message_index = message_characters.map do |message_character|
+    message_index = []
+    message_characters.each do |message_character|
       if !@character_set.include?(message_character)
         special_character[message_character] = message.index(message_character)
-      else
-        @character_set.index(message_character)
+      elsif @character_set.include?(message_character)
+        message_index << @character_set.index(message_character)
       end
-    end.each_slice(4).to_a
-    require "pry"; binding.pry
+    end
+    message_index = message_index.each_slice(4).to_a
     new_message_shift = []
     transformer = message_index.map do |array|
       Hash[shift.values.zip(array)]
@@ -39,24 +40,29 @@ class Encrypter
     new_message = encrypter.map do |letter|
       letter[0]
     end.inject(:+)
-    {
-      encryption: new_message,
-      key: key,
-      date: date
-    }
+    if special_character == {}
+      final_message = new_message
+    else
+      final_message = special_character.each_pair do |character, index|
+        new_message.insert(index, character)
+      end
+      new_message
+    end
   end
 
   def decrypt(message, key = key_finder, date = date_formatter)
     shift = shifts(date, key)
-    message_characters = message.split('')
+    message_characters = message.downcase.split('')
     special_character = Hash.new(0)
-    message_index = message_characters.map do |message_character|
-      if !@character_set.include?(message_character) == true
+    message_index = []
+    message_characters.each do |message_character|
+      if !@character_set.include?(message_character)
         special_character[message_character] = message.index(message_character)
-      else
-        @character_set.index(message_character)
+      elsif @character_set.include?(message_character)
+        message_index << @character_set.index(message_character)
       end
-    end.each_slice(4).to_a
+    end
+    message_index = message_index.each_slice(4).to_a
     new_message_shift = []
     transformer = message_index.map do |array|
       Hash[shift.values.zip(array)]
@@ -71,11 +77,13 @@ class Encrypter
     new_message = encrypter.map do |letter|
       letter[0]
     end.inject(:+)
-    final_message = new_message.index(special_character.values[0]) << special_character.keys[0]
-    {
-      decryption: final_message,
-      key: key,
-      date: date
-    }
+    if special_character == {}
+      final_message = new_message
+    else
+      final_message = special_character.each_pair do |character, index|
+        new_message.insert(index, character)
+      end
+      new_message
+    end
   end
 end

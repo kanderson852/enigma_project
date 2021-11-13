@@ -28,28 +28,33 @@ describe Encrypter do
   end
 
   it 'a offsets' do
-    expect(encrypter.a_offset(date)).to be_a(Integer)
     expect(encrypter.a_offset(date)).to eq(0)
+    allow(Date).to receive(:today).and_return(Date.new(1995,2,3))
+    expect(encrypter.a_offset).to eq(7)
   end
 
   it 'b offsets' do
-    expect(encrypter.b_offset(date)).to be_a(Integer)
     expect(encrypter.b_offset(date)).to eq(4)
+    allow(Date).to receive(:today).and_return(Date.new(1995,2,3))
+    expect(encrypter.b_offset).to eq(0)
   end
 
   it 'c offsets' do
-    expect(encrypter.c_offset(date)).to be_a(Integer)
     expect(encrypter.c_offset(date)).to eq(0)
+    allow(Date).to receive(:today).and_return(Date.new(1995,2,3))
+    expect(encrypter.c_offset).to eq(2)
   end
 
   it 'd offsets' do
-    expect(encrypter.d_offset(date)).to be_a(Integer)
     expect(encrypter.d_offset(date)).to eq(1)
+    allow(Date).to receive(:today).and_return(Date.new(1995,2,3))
+    expect(encrypter.d_offset).to eq(5)
   end
 
   it 'lists the offsets' do
-    expect(encrypter.offset).to be_a(Hash)
     expect(encrypter.offset(date)).to eq( {'A' => 0, 'B' => 4, 'C' => 0, 'D' => 1})
+    allow(Date).to receive(:today).and_return(Date.new(1995,2,3))
+    expect(encrypter.offset).to eq({'A' => 7, 'B' => 0, 'C' => 2, 'D' => 5})
   end
 
   it 'finds keys' do
@@ -96,15 +101,16 @@ describe Encrypter do
   end
 
   it 'can encrypt' do
-    expect(encrypter.encrypt("hello world!", "02715", "040895")).to eq({encryption: "keder ohulw!", key: "02715", date: "040895"})
-    expect(encrypter.encrypt("HELLO WORLD", "02715", "040895")).to eq({encryption: "keder ohulw", key: "02715", date: "040895"})
-    expect(encrypter.encrypt("hello world!", "02715", "040895")).to eq({encryption: "keder ohulw!", key: "02715", date: "040895"})
-    expect(encrypter.encrypt("hello world", "02715")).to be_a(Hash)
-    expect(encrypter.encrypt("hello world", "02715")).to include(key: "02715")
-    expect(encrypter.encrypt("hello world")).to be_a(Hash)
+    expect(encrypter.encrypt("hello world", "02715", "040895")).to eq("keder ohulw")
+    expect(encrypter.encrypt("HELLO WORLD", "02715", "040895")).to eq("keder ohulw")
+    expect(encrypter.encrypt("@hel?lo world!", "02715", "040895")).to eq("@ked?er ohulw!")
+    expect(encrypter.encrypt("hello world", "02715")).to be_a(String)
+    expect(encrypter.encrypt("hello world")).to be_a(String)
   end
 
   it 'can decrypt' do
-    expect(encrypter.decrypt("keder ohulw", "02715", "040895")).to eq({decryption: "hello world", key: "02715", date: "040895"})
+    expect(encrypter.decrypt("keder ohulw", "02715", "040895")).to eq("hello world")
+    expect(encrypter.decrypt("KEDER OHULW", "02715", "040895")).to eq("hello world")
+    expect(encrypter.decrypt("keder ohulw!", "02715", "040895")).to eq("hello world!")
   end
 end
