@@ -17,6 +17,10 @@ describe Encrypter do
     expect(encrypter.character_set).to eq(("a".."z").to_a << " ")
   end
 
+  it 'uses current date as a default' do
+    allow(Date).to receive(:today).and_return(Date.new(2001,2,3))
+  end
+
   it 'finds offsets' do
     expect(encrypter.offset_finder.length).to be(4)
     expect(encrypter.offset_finder(date).length).to be(4)
@@ -92,6 +96,15 @@ describe Encrypter do
   end
 
   it 'can encrypt' do
-    expect(encrypter.encrypt("hello world", "02715", "040895")).to eq({encryption: "keder ohulw", key: "02715", date: "040895"})
+    expect(encrypter.encrypt("hello world!", "02715", "040895")).to eq({encryption: "keder ohulw!", key: "02715", date: "040895"})
+    expect(encrypter.encrypt("HELLO WORLD", "02715", "040895")).to eq({encryption: "keder ohulw", key: "02715", date: "040895"})
+    expect(encrypter.encrypt("hello world!", "02715", "040895")).to eq({encryption: "keder ohulw!", key: "02715", date: "040895"})
+    expect(encrypter.encrypt("hello world", "02715")).to be_a(Hash)
+    expect(encrypter.encrypt("hello world", "02715")).to include(key: "02715")
+    expect(encrypter.encrypt("hello world")).to be_a(Hash)
+  end
+
+  it 'can decrypt' do
+    expect(encrypter.decrypt("keder ohulw", "02715", "040895")).to eq({decryption: "hello world", key: "02715", date: "040895"})
   end
 end
