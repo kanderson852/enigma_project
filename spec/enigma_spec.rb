@@ -14,7 +14,7 @@ describe Enigma do
     expect(enigma.encrypt("hello world", "02715")).to include(key: "02715")
   end
 
-  xit 'can decrypt' do
-    expect(enigma.decrypt(message, key, date)).to be_a(Hash)
+  it 'can decrypt' do
+    expect(enigma.decrypt("keder ohulw", "02715", "040895")).to eq({decryption: "hello world", key: "02715", date: "040895"})
   end
 end
